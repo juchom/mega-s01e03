@@ -4,7 +4,7 @@ title: '#4471 · two problems, not one'
 owner: support desk
 status: closed
 reviewed: 2026-10-28
-signature: juchom
+signature: v1.eyJzdWIiOiIxNzY4IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyMDkxMzMsImV4cCI6MTc5MzI5NTUzM30.NU7anmlQmih5u8HXYaHhS8V0JP3xO18u3Xzi620Nv_k
 ---
 
 <script>
