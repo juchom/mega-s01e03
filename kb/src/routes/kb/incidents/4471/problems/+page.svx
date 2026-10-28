@@ -2,7 +2,7 @@
 layout: runbook
 title: '#4471 · two problems, not one'
 owner: support desk
-status: open
+status: closed
 reviewed: 2026-10-28
 signature: juchom
 ---
@@ -20,15 +20,15 @@ signature: juchom
   };
 </script>
 
-[#4471](/kb/incidents/4471) holds <ProblemCount ticket={4471} /> reports and says they are one bug with
-one fix queued. They are not. The desk merged them by subject line
+[#4471](/kb/incidents/4471) holds <ProblemCount ticket={4471} /> reports and said they were one bug with
+one fix queued. They were not. The desk merged them by subject line
 ([decision 0001](/kb/decisions/0001-dedupe-by-subject)), and a subject says how a report feels,
-not what broke. Placed by tenant and channel (`causes.ts`), #4471 holds two problems. The queued
-parser fix closes only the first.
+not what broke. Placed by tenant and channel (`causes.ts`), #4471 holds two problems, and they
+closed in two different ways.
 
-<Callout kind="warn">
-Not one issue. The parser fix will not close the booking-v3 hint reports. Each problem now has
-its own ticket.
+<Callout>
+Closed 5 October. <code>parser</code>: fixed (<code>fix(dates): parse dd/mm for eu locales</code>).
+<code>hint</code>: won't fix, the booking-v3 form is retired. Both tickets are closed.
 </Callout>
 
 ## The problems
@@ -39,8 +39,9 @@ its own ticket.
 
 This one covers <ProblemCount ticket={4471} problem="parser" /> reports. The shared parser reads every date
 month first. Every tenant on file writes the day first, so a date like 7 April comes out as
-4 July. It happens in the app, by email, and on the booking-v2 form, for all eleven tenants. This
-is the bug the queued fix is for.
+4 July. It happens in the app, by email, and on the booking-v2 form, for all eleven tenants.
+
+**Fixed** by `fix(dates): parse dd/mm for eu locales`. Ticket closed as completed.
 
 A few of these reports do not describe a clean swap: the desk read some as a one-day move
 (`desk-notes.json`), and some say only "the wrong day". Their tenant and channel put them here,
@@ -51,8 +52,8 @@ so they are counted here.
 This one covers <ProblemCount ticket={4471} problem="hint" /> reports, all through the booking form of the
 three tenants on booking-v3. The form prints `MM/DD/YYYY` under its date field. People type what
 the hint says, and the form then reads the date the tenant's way, day first. The parser is not in
-that path, so the parser fix leaves these reports as they are. The fix is the hint, or the form's
-reading of it.
+that path, so the parser fix leaves these reports as they are. **Won't fix:** the booking-v3 form is retired, so the hint goes with it. Ticket closed as not
+planned. The parser fix alone would not have closed these reports.
 
 ## What was wrong with the count
 
@@ -65,7 +66,8 @@ reading of it.
 
 ## For the desk
 
-- Before a ticket is marked known, check that one fix closes every report in it.
+- Before a ticket is marked known, check that one fix closes every report in it. Here one
+  problem closed with a fix and the other with a retired form.
 - Count by cause. A note on how a report reads is a footnote, not a new ticket.
 
 <RenderStamp {signature} />

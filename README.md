@@ -1,7 +1,7 @@
 # mega-s01e03 · ticket #4471, split
 
-The support desk merged 412 date reports into one ticket, #4471, and marked it known. They are
-two problems, not one. Each one has its own ticket in this repo:
+The support desk merged 412 date reports into one ticket, #4471, and marked it known. They were
+two problems, not one. Each had its own ticket here. #4471 closed on 5 October: `parser` fixed, `hint` won't fix (booking-v3 retired). Both tickets are closed.
 
 | ticket | problem | reports |
 |---|---|---|
