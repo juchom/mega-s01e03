@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link href="../../../_app/immutable/entry/start.3mjQC-5k.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BQfMM7Jv.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/DChc7YpT.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BWUdTF5t.js" rel="modulepreload">
+		<link href="../../../_app/immutable/entry/app.BrqovFae.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/D37ruAJc.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/t1zubgls.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/C-ggmPc3.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/CWCEDZjb.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/0.CwQmFXlZ.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BqcJOarN.js" rel="modulepreload">
+		<link href="../../../_app/immutable/nodes/5.BoL4bFZx.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/D3J9c5Ss.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/B7okSU-D.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/SwkR7CaB.js" rel="modulepreload">
+		<link href="../../../_app/immutable/chunks/BypDfxWf.js" rel="modulepreload">
+		<!--e2jw2j--><!----><title>#4471 · three problems, not one · support kb</title>
+		<link href="../../../_app/immutable/assets/runbook.BhhgOc_n.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/Callout.yLErXQDM.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/CauseTable.DuKfINX_.css" rel="stylesheet">
+		<link href="../../../_app/immutable/assets/5.DdxwZuQv.css" rel="stylesheet"></head>
+  <body><div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">#4471 · three problems, not one</h1> <p class="meta svelte-e2jw2j"><span>owner <b>support desk</b></span> <span class="status open svelte-e2jw2j">open</span> <span class="svelte-e2jw2j">reviewed 2026-10-28 · 0 days ago</span></p></header> <!--[-1--><!--]--> <main><p><a href="/kb/incidents/4471">#4471</a> holds <strong>412</strong><!----> reports and says they are one bug with
+one fix queued. They are not. The desk merged them by subject line
+(<a href="/kb/decisions/0001-dedupe-by-subject">decision 0001</a>), and a subject says how a report feels,
+not what broke. Read by tenant, channel and body, #4471 holds three problems. The queued parser
+fix closes only the first.</p> <aside class="warn svelte-17bri61"><!---->Not one issue. The parser fix will not close the booking-v3 hint reports or the one-day moves.
+Each problem now has its own ticket.<!----></aside><!----> <h2>The problems</h2> <p class="sum svelte-1op6c6"><strong>412</strong> reports merged into #4471 · <strong>3</strong> problems</p> <table><thead><tr><th>problem</th><th>reports</th><th>tenants</th><th>seen</th><th>tracked in</th></tr></thead><tbody><!--[--><tr><td><code>parser</code></td><td>374</td><td>11</td><td>2026-04-01 → 2026-10-04</td><td><!--[0--><a href="https://github.com/juchom/mega-s01e03/issues/1">mega-s01e03#1</a><!--]--></td></tr><tr><td><code>hint</code></td><td>33</td><td>3</td><td>2026-04-17 → 2026-09-22</td><td><!--[0--><a href="https://github.com/juchom/mega-s01e03/issues/2">mega-s01e03#2</a><!--]--></td></tr><tr><td><code>shift</code></td><td>5</td><td>5</td><td>2026-04-02 → 2026-10-04</td><td><!--[0--><a href="https://github.com/juchom/mega-s01e03/issues/3">mega-s01e03#3</a><!--]--></td></tr><!--]--></tbody><tfoot class="svelte-1op6c6"><tr><td class="svelte-1op6c6">total</td><td class="svelte-1op6c6">412</td><td colspan="3" class="svelte-1op6c6"></td></tr></tfoot></table><!----> <h3><code>parser</code> — day-first dates read month first</h3> <p>This one covers <strong>374</strong><!----> reports. The shared parser reads every date
+month first. Every tenant on file writes the day first, so any date with a day of 12 or less
+comes out flipped: 7 April becomes 4 July. It happens in the app, by email, and on the
+booking-v2 form. This is the bug the queued fix is for.</p> <h3><code>hint</code> — booking-v3 tells people to type month first</h3> <p>This one covers <strong>33</strong><!----> reports, all through the booking form of the three
+tenants on booking-v3. The form prints <code>MM/DD/YYYY</code> under its date field. People type what the
+hint says, and the form then reads the date the tenant’s way, day first. The parser is not in
+the path, so the parser fix leaves these as they are. The fix is the hint, or the form’s reading
+of it.</p> <h3><code>shift</code> — the day moves by one, the month stays</h3> <p>This one covers <strong>5</strong><!----> reports, and they describe no flip at all. The meeting moves
+by one day: “Tuesday 12 May” in the invite, Monday 11 May in the calendar; a client in Lisbon
+and a client in Toronto see different days for one meeting; an invite arrives before its booking.
+This points at time zones or DST, not at day and month order. The desk had already read these
+as a one-day move (<code>desk-notes.json</code>) but left them counted under <code>parser</code>.</p> <h2>How to read the old table</h2> <p>The table on #4471 counts the same reports by cause, with the one-day moves still under <code>parser</code>:</p> <p class="sum svelte-12oyimm"><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p> <table><thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th></th></tr></thead><tbody><!--[--><tr class="svelte-12oyimm"><td class="svelte-12oyimm"><code>parser</code></td><td class="svelte-12oyimm">379</td><td class="tags svelte-12oyimm">parser ×356 · hint ×23</td><td class="svelte-12oyimm">11</td><td class="svelte-12oyimm">2026-04-01 → 2026-10-04</td><td class="svelte-12oyimm">#4471</td></tr><tr class="svelte-12oyimm wrong"><td class="svelte-12oyimm"><code>hint</code></td><td class="svelte-12oyimm">33</td><td class="tags svelte-12oyimm">hint ×18 · parser ×15</td><td class="svelte-12oyimm">3</td><td class="svelte-12oyimm">2026-04-17 → 2026-09-22</td><td class="svelte-12oyimm">not this ticket — no ticket of its own</td></tr><!--]--></tbody></table> <!--[--><!--[0--><p class="note svelte-12oyimm">5 reports read as a one-day move; filed under <code>parser</code> by tenant.</p><!--]--><!--[-1--><!--]--><!--]--><!----> <h2>What was wrong with the count</h2> <ul><li><strong>Merged on subject.</strong> Ten of the twelve subject lines in #4471 are shared by reports of two
+or three problems. “Date is wrong” covers all three.</li> <li><strong>Intake tags are a guess.</strong> <code>intakeTag</code> follows the reporter’s browser. Reporters on an <code>en-US</code> browser were tagged <code>hint</code> wherever they booked. Use the tenant and the channel
+(<code>causes.ts</code>), not the tag.</li> <li><strong>The export overlaps.</strong> The ticket system’s pages repeat some reports. Count each id once.</li></ul> <h2>For the desk</h2> <ul><li>Before a ticket is marked known, check that one fix closes every report in it.</li> <li>When a report does not describe the ticket’s bug, give it its own ticket, not a footnote.</li></ul> <!--[0--><p class="stamp svelte-1280m42">desk ref <b class="svelte-1280m42">DR-WK4M-YWRF</b></p><!--]--><!----><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!--]--><!----><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_lhxfe9 = {
+						base: new URL("../../..", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../_app/immutable/entry/start.3mjQC-5k.js"),
+						import("../../../_app/immutable/entry/app.BrqovFae.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div></body>
+</html>
