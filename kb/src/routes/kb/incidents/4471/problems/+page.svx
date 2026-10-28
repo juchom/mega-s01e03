@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · three problems, not one'
+title: '#4471 · two problems, not one'
 owner: support desk
 status: open
 reviewed: 2026-10-28
@@ -10,7 +10,6 @@ signature: juchom
 <script>
   import ProblemTable from '#lib/kb/ProblemTable.svelte';
   import ProblemCount from '#lib/kb/ProblemCount.svelte';
-  import CauseTable from '#lib/kb/CauseTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
@@ -18,67 +17,55 @@ signature: juchom
   const issues = {
     parser: { label: 'mega-s01e03#1', href: `${repo}/1` },
     hint: { label: 'mega-s01e03#2', href: `${repo}/2` },
-    shift: { label: 'mega-s01e03#3', href: `${repo}/3` },
   };
 </script>
 
 [#4471](/kb/incidents/4471) holds <ProblemCount ticket={4471} /> reports and says they are one bug with
 one fix queued. They are not. The desk merged them by subject line
 ([decision 0001](/kb/decisions/0001-dedupe-by-subject)), and a subject says how a report feels,
-not what broke. Read by tenant, channel and body, #4471 holds three problems. The queued parser
-fix closes only the first.
+not what broke. Placed by tenant and channel (`causes.ts`), #4471 holds two problems. The queued
+parser fix closes only the first.
 
 <Callout kind="warn">
-Not one issue. The parser fix will not close the booking-v3 hint reports or the one-day moves.
-Each problem now has its own ticket.
+Not one issue. The parser fix will not close the booking-v3 hint reports. Each problem now has
+its own ticket.
 </Callout>
 
 ## The problems
 
 <ProblemTable ticket={4471} {issues} />
 
-### `parser` — day-first dates read month first
+### `parser`: day-first dates read month first
 
 This one covers <ProblemCount ticket={4471} problem="parser" /> reports. The shared parser reads every date
-month first. Every tenant on file writes the day first, so any date with a day of 12 or less
-comes out flipped: 7 April becomes 4 July. It happens in the app, by email, and on the
-booking-v2 form. This is the bug the queued fix is for.
+month first. Every tenant on file writes the day first, so a date like 7 April comes out as
+4 July. It happens in the app, by email, and on the booking-v2 form, for all eleven tenants. This
+is the bug the queued fix is for.
 
-### `hint` — booking-v3 tells people to type month first
+A few of these reports do not describe a clean swap: the desk read some as a one-day move
+(`desk-notes.json`), and some say only "the wrong day". Their tenant and channel put them here,
+so they are counted here.
 
-This one covers <ProblemCount ticket={4471} problem="hint" /> reports, all through the booking form of the three
-tenants on booking-v3. The form prints `MM/DD/YYYY` under its date field. People type what the
-hint says, and the form then reads the date the tenant's way, day first. The parser is not in
-the path, so the parser fix leaves these as they are. The fix is the hint, or the form's reading
-of it.
+### `hint`: booking-v3 tells people to type month first
 
-### `shift` — the day moves by one, the month stays
-
-This one covers <ProblemCount ticket={4471} problem="shift" /> reports, and they describe no flip at all. The meeting moves
-by one day: "Tuesday 12 May" in the invite, Monday 11 May in the calendar; a client in Lisbon
-and a client in Toronto see different days for one meeting; an invite arrives before its booking.
-This points at time zones or DST, not at day and month order. The desk had already read these
-as a one-day move (`desk-notes.json`) but left them counted under `parser`.
-
-## How to read the old table
-
-The table on #4471 counts the same reports by cause, with the one-day moves still under
-`parser`:
-
-<CauseTable ticket={4471} />
+This one covers <ProblemCount ticket={4471} problem="hint" /> reports, all through the booking form of the
+three tenants on booking-v3. The form prints `MM/DD/YYYY` under its date field. People type what
+the hint says, and the form then reads the date the tenant's way, day first. The parser is not in
+that path, so the parser fix leaves these reports as they are. The fix is the hint, or the form's
+reading of it.
 
 ## What was wrong with the count
 
-- **Merged on subject.** Ten of the twelve subject lines in #4471 are shared by reports of two
-  or three problems. "Date is wrong" covers all three.
+- **Merged on subject.** Ten of the twelve subject lines in #4471 are shared by `parser` and
+  `hint` reports. The subject cannot tell them apart; the tenant and the channel can.
 - **Intake tags are a guess.** `intakeTag` follows the reporter's browser. Reporters on an
-  `en-US` browser were tagged `hint` wherever they booked. Use the tenant and the channel
-  (`causes.ts`), not the tag.
+  `en-US` browser were tagged `hint` wherever they booked. Use the tenant and the channel, not
+  the tag.
 - **The export overlaps.** The ticket system's pages repeat some reports. Count each id once.
 
 ## For the desk
 
 - Before a ticket is marked known, check that one fix closes every report in it.
-- When a report does not describe the ticket's bug, give it its own ticket, not a footnote.
+- Count by cause. A note on how a report reads is a footnote, not a new ticket.
 
 <RenderStamp {signature} />

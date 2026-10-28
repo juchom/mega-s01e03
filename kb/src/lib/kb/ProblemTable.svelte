@@ -29,10 +29,16 @@
       </tr>
     {/each}
   </tbody>
+  <tbody>
+  {#each result.rows.filter((r) => r.readAsOneDayMove) as row (row.problem)}
+    <tr class="note"><td colspan="5">{row.readAsOneDayMove} of the <code>{row.problem}</code> reports read as a one-day move (desk notes); counted with <code>{row.problem}</code> by tenant and channel.</td></tr>
+  {/each}
+  </tbody>
   <tfoot><tr><td>total</td><td>{result.rows.reduce((n, r) => n + r.reports, 0)}</td><td colspan="3"></td></tr></tfoot>
 </table>
 
 <style>
   .sum { font-size: 1.1rem; }
   tfoot td { font-weight: 600; }
+  .note td { color: var(--muted); font-size: 0.85em; }
 </style>
